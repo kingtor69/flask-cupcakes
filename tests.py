@@ -28,6 +28,17 @@ CUPCAKE_DATA_2 = {
     "image": "http://test.com/cupcake2.jpg"
 }
 
+CUPCAKE_PATCH_DATA = {
+    "flavor": "ChangedFlavor"
+}
+
+CUPCAKE_PATCH_DATA_2 = {
+    "rating": 4,
+    "pickles": False
+}
+
+
+
 
 class CupcakeViewsTestCase(TestCase):
     """Tests for views of API."""
@@ -107,3 +118,39 @@ class CupcakeViewsTestCase(TestCase):
             })
 
             self.assertEqual(Cupcake.query.count(), 2)
+
+    def test_update_cupcake_expected_input(self):
+        with app.test_client() as client:
+            url = f"/api/cupcakes/{self.cupcake.id}"
+            resp = client.patch(url, json=CUPCAKE_PATCH_DATA)
+
+            data = resp.json
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(data, {
+                "cupcake": {
+                    "flavor": "ChangedFlavor",
+                    "id": self.cupcake.id,
+                    "image": "http://test.com/cupcake.jpg",
+                    "rating": 5,
+                    "size": "TestSize"
+                }
+            })
+
+    def test_update_cupcake_unexpected_input(self):
+        with app.test_client() as client:
+            url = f"/api/cupcakes/{self.cupcake.id}"
+            resp = client.patch(url, json=CUPCAKE_PATCH_DATA_2)
+
+            data = resp.json
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(data, {
+                "cupcake": {
+                    "flavor": "TestFlavor",
+                    "id": self.cupcake.id,
+                    "image": "http://test.com/cupcake.jpg",
+                    "rating": 4,
+                    "size": "TestSize"
+                }
+            })
