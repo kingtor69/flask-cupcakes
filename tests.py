@@ -29,7 +29,8 @@ CUPCAKE_DATA_2 = {
 }
 
 CUPCAKE_PATCH_DATA = {
-    "flavor": "ChangedFlavor"
+    "flavor": "ChangedFlavor",
+    "rating": 6
 }
 
 CUPCAKE_PATCH_DATA_2 = {
@@ -120,6 +121,7 @@ class CupcakeViewsTestCase(TestCase):
             self.assertEqual(Cupcake.query.count(), 2)
 
     def test_update_cupcake_expected_input(self):
+        """test the PATCH route when updated a cupcake with only expected fields being changed"""
         with app.test_client() as client:
             url = f"/api/cupcakes/{self.cupcake.id}"
             resp = client.patch(url, json=CUPCAKE_PATCH_DATA)
@@ -132,12 +134,15 @@ class CupcakeViewsTestCase(TestCase):
                     "flavor": "ChangedFlavor",
                     "id": self.cupcake.id,
                     "image": "http://test.com/cupcake.jpg",
-                    "rating": 5,
+                    "rating": 6,
                     "size": "TestSize"
                 }
             })
 
     def test_update_cupcake_unexpected_input(self):
+        """test a PATCH submission that includes unexpected entries
+        it should update the entries that do match the API data
+        and ignore those that do not"""
         with app.test_client() as client:
             url = f"/api/cupcakes/{self.cupcake.id}"
             resp = client.patch(url, json=CUPCAKE_PATCH_DATA_2)
@@ -153,4 +158,17 @@ class CupcakeViewsTestCase(TestCase):
                     "rating": 4,
                     "size": "TestSize"
                 }
+            })
+
+    def test_delete_cupcake(self):
+        """test the deletion of a given cupcake"""
+        with app.test_client() as client:
+            url = f"/api/cupcakes/{self.cupcake.id}"
+            resp = client.delete(url)
+
+            data = resp.json
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(data, {
+                "deleted": self.cupcake.id
             })
