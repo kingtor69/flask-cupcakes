@@ -1,5 +1,5 @@
 """Flask app for Cupcakes"""
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, Cupcake
 
@@ -19,3 +19,26 @@ connect_db (app)
 def load_home_page():
     """ load home page """
     return render_template('home.html')
+
+################ api routes
+@app.route('/api/cupcakes')
+def return_all_cupcakes():
+    """return info on all cupcakes in the database"""
+    cupcakes = [cupcake.serialize() for cupcake in Cupcake.query.all()]
+    return jsonify(cupcakes=cupcakes)
+
+@app.route('/api/cupcakes/<int:id>')
+def single_cupcake_into(id):
+    """return info on cupcake of designated ID, return 404 if there is no cupcake with that ID"""
+    cupcake = Cupcake.query.get_or_404(id)
+    return jsonify(cupcake=cupcake.serialize())
+
+@app.route('/api/cupcakes', methods=['POST'])
+def create_new_cupcake():
+
+    cupcake = Cupcake(flavor=request.json['flavor'], size=request.json['size'], rating=request.json['rating'], image=request.json['image'])
+    db.session.add(cupcake)
+    db.session.commit()
+    json_response = jsonify(cupcake=cupcake.serialize())
+    return (json_response, 201)
+
