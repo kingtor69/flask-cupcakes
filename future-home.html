@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block tab_title %}cupcakes!{% endblock %}
+{% block header %}You want some cupcakes?<br>Who doesn't want cupcakes?{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        {% for cupcake in cupcakes %}
+            <div class="col">
+                <div class="card card-dark">
+                    <img src="{{ cupcake.image }}" alt="cupcake picture" class="card-img-top img-fluid">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ cupcake.flavor }}</h4>
+                        <p class="card-text">
+                            size: {{ cupcake.size }}<br>
+                            rating: {{ cupcake.rating }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <form action="" method="POST" id="new-cupcake-form" novalidate>
+            {{ form.hidden_tag() }}
+            {% for field in form
+                if field.widget.input_type != 'hidden' %}
+                <p>{{ field.label(class_="text-primary new-cupcake-fields") }}<br>
+                {{ field(class_="bg-dark text-light rounded" }}
+                {% for err in field.errors %}
+                    <br>
+                    <small class="text-warning">
+                        {{ err }}
+                    </small>
+                {% endfor %}
+                </p>
+            {% endfor %}
+        </form>
+    </div>
+</div>
+{% endblock %}

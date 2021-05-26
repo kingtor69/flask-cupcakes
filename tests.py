@@ -61,6 +61,7 @@ class CupcakeViewsTestCase(TestCase):
         db.session.rollback()
 
     def test_list_cupcakes(self):
+        """test GET request to cupcakes route returns JSON list of cupcakes"""
         with app.test_client() as client:
             resp = client.get("/api/cupcakes")
 
@@ -80,6 +81,7 @@ class CupcakeViewsTestCase(TestCase):
             })
 
     def test_get_cupcake(self):
+        """test GET request to a specific cupcake id returns JSON info for that one cupcake"""
         with app.test_client() as client:
             url = f"/api/cupcakes/{self.cupcake.id}"
             resp = client.get(url)
@@ -97,6 +99,7 @@ class CupcakeViewsTestCase(TestCase):
             })
 
     def test_create_cupcake(self):
+        """test POST request with JSON cupcake data return confirmation of new cupcake data"""
         with app.test_client() as client:
             url = "/api/cupcakes"
             resp = client.post(url, json=CUPCAKE_DATA_2)
@@ -161,7 +164,7 @@ class CupcakeViewsTestCase(TestCase):
             })
 
     def test_delete_cupcake(self):
-        """test the deletion of a given cupcake"""
+        """test DELETE of a given cupcake returns deleted confirmation"""
         with app.test_client() as client:
             url = f"/api/cupcakes/{self.cupcake.id}"
             resp = client.delete(url)

@@ -28,4 +28,4 @@ class Cupcake(db.Model):
         }
 
     def __repr__(self):
-        return f"<Cupcake {self.id} flavor={self.flavor} size={self.size} rating={self.rating} image={image}>"
+        return f"<Cupcake {self.id} flavor={self.flavor} size={self.size} rating={self.rating} image={self.image}>"

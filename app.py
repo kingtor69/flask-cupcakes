@@ -2,6 +2,7 @@
 from flask import Flask, render_template, request, redirect, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, Cupcake
+# from forms import AddCupcakeForm
 
 app = Flask(__name__)
 
@@ -18,7 +19,11 @@ connect_db (app)
 @app.route('/')
 def load_home_page():
     """ load home page """
-    return render_template('home.html')
+    cupcakes = Cupcake.query.all()
+    # form = AddCupcakeForm()
+    # if form.validate_on_submit():
+        # I just realized how weird this is going to be to mix with jQuery... I"m saving this for further learning
+    return render_template('home.html', cupcakes=cupcakes)
 
 ################ api routes
 @app.route('/api/cupcakes')
