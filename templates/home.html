@@ -3,28 +3,14 @@
 {% block header %}You want some cupcakes?<br>Who doesn't want cupcakes?{% endblock %}
 {% block content %}
 <div class="container">
-    <div class="row">
-        {% for cupcake in cupcakes %}
-            <div class="col col-md-4 col-lg-3">
-                <div class="card card-dark">
-                    <img src="{{ cupcake.image }}" alt="cupcake picture" class="card-img-top img-fluid">
-                    <div class="card-body bg-dark">
-                        <h4 class="card-title text-light">{{ cupcake.flavor }}</h4>
-                        <p class="card-text text-light">
-                            size: {{ cupcake.size }}<br>
-                            rating: {{ cupcake.rating }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
+    <div class="row" id="cupcakes-display">
     </div>
     <br>
     <div class="row">
         <div class="col col-md-6 col-lg-4">
             <hr>
             <h3>add a new cupcake:</h3>
-            <form method="POST" id="new-cupcake-form" novalidate>
+            <form id="new-cupcake-form">
                 <div class="form-group">
                     <label for="flavor">Flavor:</label>
                     <input type="text" name="flavor" placeholder="flavor" class="text-light bg-dark rounded form-control" id="flavor" required>
@@ -35,7 +21,7 @@
                 </div>
                 <div class="form-group">
                     <label for="rating">Rating:</label>
-                    <input type="number" name="rating" placeholder="rating" class="text-light bg-dark rounded form-control" id="rating" required>
+                    <input type="text" name="rating" placeholder="rating" class="text-light bg-dark rounded form-control" id="rating" required>
                 </div>
                 <div class="form-group">
                     <label for="image">Image URL:</label>
