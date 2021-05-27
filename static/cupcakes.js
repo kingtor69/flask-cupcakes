@@ -1,41 +1,29 @@
-const defaultImageUrl = "https://tinyurl.com/demo-cupcake"
-const APIBaseUrl = "/api/cupcakes"
+const defaultImageUrl = "https://tinyurl.com/demo-cupcake";
+const apiBaseUrl = "/api/cupcakes";
+const $cupcakesDisplay = $('#cupcakes-display')
 
-function displayCupcakeHTML(cupcake) {
+function displayCupcakesHtml(cupcake) {
     return `
         <div class="col col-md-4 col-lg-3 mb-3">
             <div class="card card-dark">
-                <img src="{{ cupcake.image }}" alt="cupcake picture" class="card-img-top img-fluid">
+                <img src="${cupcake.image}" alt="cupcake picture" class="card-img-top img-fluid">
                 <div class="card-body bg-dark">
-                    <h4 class="card-title text-light">{{ cupcake.flavor }}</h4>
+                    <h4 class="card-title text-light">${cupcake.flavor}</h4>
                     <p class="card-text text-light">
-                        size: {{ cupcake.size }}<br>
-                        rating: {{ cupcake.rating }}
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col col-md-4 col-lg-3 mb-3">
-            <div class="card card-dark">
-                <img src="{{ cupcake.image }}" alt="cupcake picture" class="card-img-top img-fluid">
-                <div class="card-body bg-dark">
-                    <h4 class="card-title text-light">{{ cupcake.flavor }}</h4>
-                    <p class="card-text text-light">
-                        size: {{ cupcake.size }}<br>
-                        rating: {{ cupcake.rating }}
+                        size: ${cupcake.size}<br>
+                        rating: ${cupcake.rating}
                     </p>
                 </div>
             </div>
         </div>
     `;
-}
+};
 
-async function loadApiCupcakes() {
-    const resp = await axios.get(APIBaseUrl);
-
-    for (let cupcakeData of resp.data.cupcakes) {
-        const thisCupcake = $(displayCupcakeHTML(cupcakeData));
-        $("#cupcake-display".append(thisCupcake));
+async function getCupcakesFromApi() {
+    const apiCupcakes = await axios.get(apiBaseUrl);
+    for (let cupcakeData of apiCupcakes.data.cupcakes) {
+        let cupcake = $(displayCupcakesHtml(cupcakeData));
+        $cupcakesDisplay.append(cupcake);
     }
 }
 
@@ -62,10 +50,9 @@ $('#new-cupcake-form').submit(function(e) {
 })
 
 async function processCupcakeForm(formData) {
-    const newCupcakeResponse = await axios.post(APIBaseURL, formData);
-    const newCupcake = $(displayCupcakeHTML(newCupcakeResponse.data.cupcake));
-    $("#cupcake-display").append(newCupcake);
-    $("#new-cupcake-form").trigger("reset");
-};
+    const newCupcake = await axios.post(apiBaseUrl, formData);
+    $('#new-cupcake-form').trigger("reset");
+    displayCupcakesHtml(newCupcake);
+}
 
-$(loadApiCupcakes)
+getCupcakesFromApi();
