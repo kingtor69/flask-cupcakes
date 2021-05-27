@@ -4,7 +4,7 @@ const $cupcakesDisplay = $('#cupcakes-display')
 
 function displayCupcakesHtml(cupcake) {
     return `
-        <div class="col col-md-4 col-lg-3">
+        <div class="col col-md-4 col-lg-3 mb-3">
             <div class="card card-dark">
                 <img src="${cupcake.image}" alt="cupcake picture" class="card-img-top img-fluid">
                 <div class="card-body bg-dark">
