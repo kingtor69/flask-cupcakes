@@ -31,9 +31,9 @@ function displayCupcakeHTML(cupcake) {
 }
 
 async function loadApiCupcakes() {
-    const resp = await axios.get({APIBaseUrl});
+    const resp = await axios.get(APIBaseUrl);
 
-    for (let cupcakeData of response.data.cupcakes) {
+    for (let cupcakeData of resp.data.cupcakes) {
         const thisCupcake = $(displayCupcakeHTML(cupcakeData));
         $("#cupcake-display".append(thisCupcake));
     }
