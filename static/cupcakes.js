@@ -33,16 +33,10 @@ $('#new-cupcake-form').submit(function(e) {
     for (let i = 0; i < 4; i++) {
         formData[e.target[i].id] = e.target[i].value;
     };
-    try {
-        formData.rating = parseFloat(formData.rating);
-    } catch (error) {
-        alert('rating must be a number')
-    };
-    if ((formData.rating < 0) || (formData.rating > 10));
-        alert('rating must be between 0 and 10');
-
-        if (!formData.image) {
-            formData.image = defaultImageUrl;
+    formData.rating = parseFloat(formData.rating);
+    
+    if (!formData.image) {
+        formData.image = defaultImageUrl;
     };
 
     // jsonData = JSON.stringify(formData)
